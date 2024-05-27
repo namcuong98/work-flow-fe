@@ -45,7 +45,7 @@ export const beSkillsData = [
   {
     id: "2",
     icon: "fa-brands fa-accessible-icon",
-    name: "Postman",
+    name: "Express",
   },
 ];
 

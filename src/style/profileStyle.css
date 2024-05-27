@@ -87,6 +87,10 @@
     display: flex;
 }
 
+.book-page.page-left {
+    overflow: hidden;
+}
+
 .profile-page {
     display: flex;
     flex-direction: column;

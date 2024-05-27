@@ -219,13 +219,28 @@ input:valid~ .labelLogin {
       opacity: 1;
       transform: translateX(0);
   }
-
 }
 
 
 @keyframes fadeOut {
   to {
       opacity: 0;
+  }
+}
+
+.animation-topIn{
+  animation: slideinleft ease 1s, fadeOut linear 1s 2s forwards;
+}
+
+
+@keyframes slideinleft {
+  from {
+      opacity: 0;
+      transform: translateY(-100%);
+  }    
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }
 
