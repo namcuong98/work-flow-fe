@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { loggedInInstance, useStateContext } from "../until/Until";
 import SubTasks from "../subtasks/SubTasks";
+
 import moment from "moment";
 import ButtonAction from "../actionEdit/ButtonAction";
+import {
+  getTokenLocalstorage,
+  loggedInInstance,
+  useStateContext,
+} from "../until/Until";
+import Notfound from "../components/Notfound";
+import { useNavigate } from "react-router-dom";
 import EditTask from "../tasks/EditTask";
 
-const TaskOverdue = () => {
-  const { actionLoading } = useStateContext();
-  const [data, setData] = useState([]);
+const Deadline = () => {
+  const navigate = useNavigate();
+  const { actionLoading, updateNotificationDeadline } = useStateContext();
+  const [tasksData, setTaskData] = useState([]);
   const [modal, setModal] = useState(false);
   const [openSubTasks, SetOpenSubTasks] = useState(false);
   const [taskId, setTaskId] = useState("");
@@ -20,17 +28,21 @@ const TaskOverdue = () => {
 
   useEffect(() => {
     setLoadingData(!loadingData);
-  }, [actionLoading]);
+  }, [actionLoading, openSubTasks]);
 
   useEffect(() => {
+    if (!getTokenLocalstorage()) {
+      navigate("/login");
+    }
     loggedInInstance({
-      url: `/task-overdue`,
+      url: "/task-deadline",
     })
       .then((res) => {
-        const resData = res.data.taskOverdue;
+        const resData = res.data.deadline;
         const callTotalPage = Math.ceil(resData.length / pageSize);
         setTotalPage(callTotalPage);
-        setData(res.data.taskOverdue);
+        setTaskData(res.data.deadline);
+        updateNotificationDeadline(res.data.deadline.length);
       })
       .catch((err) => {
         console.log(err);
@@ -38,13 +50,12 @@ const TaskOverdue = () => {
   }, [loadingData]);
 
   useEffect(() => {
-    const paginateData = data.slice(
+    const paginateData = tasksData.slice(
       (currentPage - 1) * pageSize,
       currentPage * pageSize
     );
     setPaginatedData(paginateData);
-    console.log(paginateData);
-  }, [data, currentPage, pageSize]);
+  }, [tasksData, currentPage, pageSize]);
 
   return (
     <>
@@ -63,9 +74,16 @@ const TaskOverdue = () => {
             </tr>
           </thead>
           <tbody className="bg-[#eef2f4] bg-opacity-90 justify-center">
-            {paginatedData.map((item, index) => {
-              return (
-                <>
+            {paginatedData && paginatedData.length === 0 ? (
+              <tr>
+                <td colSpan={8}>
+                  <Notfound />
+                </td>
+              </tr>
+            ) : (
+              paginatedData &&
+              paginatedData.map((item, index) => {
+                return (
                   <tr
                     key={index}
                     onClick={() => {
@@ -73,33 +91,42 @@ const TaskOverdue = () => {
                       setTaskId(item.id);
                     }}
                   >
-                    <td className="p-3 text-center">
-                      {(currentPage - 1) * pageSize + index + 1}
-                    </td>
-                    <td className="text-center p-3">{item.name}</td>
-                    <td className="text-center p-3">
+                    <td>{(currentPage - 1) * pageSize + index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>
                       {moment(item.start_time).format("DD/MM/YYYY h:mm A")}
                     </td>
-                    <td className="text-center p-3">
-                      {moment(item.end_time).format("DD/MM/YYYY h:mm A")}
-                    </td>
-                    <td className="text-center p-3">{item.note}</td>
-                    <td className="text-center p-3">{item.taskComplate}%</td>
-                    <td className="text-center p-3">
+                    <td>{moment(item.end_time).format("DD/MM/YYYY h:mm A")}</td>
+                    <td>{item.note}</td>
+                    <td>{item.taskComplate}%</td>
+                    <td>
                       <ButtonAction
                         taskId={item.id}
                         open={() => {
                           SetOpenSubTasks(!openSubTasks);
                         }}
                         modal={setModal}
-                        path={`/home/overdue/list-subtask/:${item.id}`}
+                        path={`/home/deadline/list-subtask/:${item.id}`}
                       />
                     </td>
-                    <td className="text-center p-3">{item.status}</td>
+                    <td>
+                      <div className="w-full flex justify-center">
+                        <p
+                          className="w-[60px] rounded-md"
+                          style={
+                            item.task_status === "done"
+                              ? { background: "#e6faf3", color: "#297068" }
+                              : { background: "#eff4fa", color: "#556092" }
+                          }
+                        >
+                          {item.task_status}
+                        </p>
+                      </div>
+                    </td>
                   </tr>
-                </>
-              );
-            })}
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
@@ -139,8 +166,9 @@ const TaskOverdue = () => {
           taskName={taskName}
           taskId={taskId}
           close={SetOpenSubTasks}
+          isTaskDeadline={true}
           idTaskOverdue={true}
-          path={`/home/overdue/list-subtask/:${taskId}`}
+          path={`/home/deadline/list-subtask/:${taskId}`}
         />
       ) : null}
       {modal && <EditTask taskId={taskId} close={setModal} />}
@@ -148,4 +176,4 @@ const TaskOverdue = () => {
   );
 };
 
-export default TaskOverdue;
+export default Deadline;

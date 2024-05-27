@@ -11,6 +11,8 @@ const ListSubTasks = () => {
   const [subTaskId, setSubTaskId] = useState("");
   const [subTasksData, setSubTaskData] = useState();
   const [modal, setModal] = useState(false);
+  const [loadingSubTasks, setLoadingSubTasks] = useState(false);
+
   const user_id = localStorage.getItem("id");
 
   useEffect(() => {
@@ -19,14 +21,17 @@ const ListSubTasks = () => {
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data.subTaskData);
         setSubTaskData(res.data.subTaskData);
         return;
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [subTasksData]);
+  }, [modal, loadingSubTasks]);
+
+  const handleLoading = () => {
+    setLoadingSubTasks(!loadingSubTasks);
+  };
 
   return (
     <>
@@ -58,23 +63,33 @@ const ListSubTasks = () => {
                   key={index}
                   onClick={() => setSubTaskId(item.id)}
                 >
-                  <td className="text-center p-3">{index + 1}</td>
-                  <td className="text-center p-3">{item.name}</td>
-                  <td className="text-center p-3">
-                    {moment(item.start_time).format("DD/MM/YYYY h:mm A")}
-                  </td>
-                  <td className="text-center p-3">
-                    {moment(item.end_time).format("DD/MM/YYYY h:mm A")}
-                  </td>
-                  <td className="text-center p-3">{item.note}</td>
-                  <td className="text-center p-3">
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{moment(item.start_time).format("DD/MM/YYYY h:mm A")}</td>
+                  <td>{moment(item.end_time).format("DD/MM/YYYY h:mm A")}</td>
+                  <td className="break-words max-w-[250px]">{item.note}</td>
+                  <td>
                     <ButtonAction
+                      loadingSubTasks={handleLoading}
                       editSubTask={setModal}
                       taskId={item.task_id}
                       subTaskId_list={subTaskId}
                     />
                   </td>
-                  <td className="text-center p-3">{item.status}</td>
+                  <td>
+                    <div className="w-full flex justify-center">
+                      <p
+                        className="w-[60px] rounded-md"
+                        style={
+                          item.status === "done"
+                            ? { background: "#e6faf3", color: "#297068" }
+                            : { background: "#eff4fa", color: "#556092" }
+                        }
+                      >
+                        {item.status}
+                      </p>
+                    </div>
+                  </td>
                 </tr>
               );
             })

@@ -9,6 +9,7 @@ const ButtonAction = ({
   path,
   subTaskId_list,
   editSubTask,
+  loadingSubTasks,
 }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const buttonRef = useRef();
@@ -48,6 +49,7 @@ const ButtonAction = ({
     })
       .then((res) => {
         setOpenEdit(false);
+        loadingSubTasks();
       })
       .catch((err) => {
         console.log(err);
@@ -68,7 +70,7 @@ const ButtonAction = ({
         >
           <i class="fa-solid fa-pen-to-square"></i>
           {openEdit && (
-            <div className="absolute bg-white rounded-xl z-10 text-sm popupSupport">
+            <div className="absolute bg-white rounded-xl z-10 text-sm overflow-hidden">
               {!subTaskId_list && (
                 <div
                   className="px-2 pt-2 hover:bg-slate-200"

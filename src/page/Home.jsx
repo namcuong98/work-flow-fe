@@ -20,15 +20,15 @@ const Home = () => {
 
   return (
     <>
-      <Layout>
+      <Layout className="backGround-home">
         <Sider
           className="sider"
           trigger={null}
-          theme="light"
           collapsed={collapsed}
           collapsible
         >
           <Sidebar
+            className="siderbar"
             openNewTasks={handleOpenNewTasks}
             closeNewTasks={setNewTasks}
           />
@@ -41,7 +41,7 @@ const Home = () => {
             className="triger-btn"
           />
         </Sider>
-        <Layout className="">
+        <Layout className="backGround-home">
           {toast ? <Toast closeToast={setToast} /> : null}
           <Header />
           <DataUser />

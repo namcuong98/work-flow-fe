@@ -4,13 +4,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { loggedInInstance } from "../until/Until";
 import { ValidateCreateTasks } from "../components/Validation";
+import moment from "moment";
 
 const EditTask = ({ close, taskId }) => {
   const info = {
     name: null,
     start_time: null,
     end_time: null,
-    note: null,
+    note: "",
     status: null,
   };
 
@@ -19,6 +20,7 @@ const EditTask = ({ close, taskId }) => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [error, setError] = useState(info);
+  const [checkStt, setCheckStt] = useState();
 
   const handleData = (e) => {
     const { value, name } = e.target;
@@ -36,8 +38,6 @@ const EditTask = ({ close, taskId }) => {
         .put(`http://localhost:8081/task-update?id=${taskId}`, data)
         .then((res) => {
           close(false);
-          window.location.reload();
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
@@ -53,6 +53,7 @@ const EditTask = ({ close, taskId }) => {
         setData(res.data.taskData[0]);
         setStartDate(res.data.taskData[0].start_time);
         setEndDate(res.data.taskData[0].end_time);
+        setCheckStt(res.data.taskData[0].status);
       })
       .catch((err) => {
         console.log(err);
@@ -61,9 +62,9 @@ const EditTask = ({ close, taskId }) => {
 
   return (
     <>
-      <div className="fixed top-0 bottom-0 right-0 left-0 flex items-center justify-center bg-opacity-70 bg-[#162938] animate-[animation-zoom_ease-in_0.3s]">
-        <div className=" p-[20px] bg-[#162938] border-2 border-[#162938] rounded-xl">
-          <div className="mt-[8px] flex items-end text-center  gap-9 text-white relative">
+      <div className="fixed top-0 bottom-0 right-0 left-0 flex items-center justify-center bg-opacity-70 bg-[#162938] text-white animate-[animation-zoom_ease-in_0.3s]">
+        <div className=" p-[20px] bg-[#162938] rounded-xl">
+          <div className="mt-[8px] flex items-end text-center gap-9 relative">
             <p className="font-semibold m-6 animation-flicker">Task Edit</p>
             <p
               onClick={() => close(false)}
@@ -96,7 +97,10 @@ const EditTask = ({ close, taskId }) => {
                 <DatePicker
                   selected={startDate}
                   onChange={(date) => {
-                    setData({ ...data, start_time: date });
+                    setData({
+                      ...data,
+                      start_time: moment(date).utcOffset(420).format(),
+                    });
                     setStartDate(date);
                   }}
                   timeInputLabel="Time:"
@@ -104,6 +108,7 @@ const EditTask = ({ close, taskId }) => {
                   showTimeInput
                   name="start_time"
                   className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -113,13 +118,17 @@ const EditTask = ({ close, taskId }) => {
                     className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
                     selected={endDate}
                     onChange={(date) => {
-                      setData({ ...data, end_time: date });
+                      setData({
+                        ...data,
+                        end_time: moment(date).utcOffset(420).format(),
+                      });
                       setEndDate(date);
                     }}
                     timeInputLabel="Time:"
                     dateFormat="dd/MM/YYYY h:mm aa"
                     showTimeInput
                     name="end_time"
+                    autoComplete="off"
                   />
                 </div>
                 {error.end_time ? (
@@ -133,11 +142,20 @@ const EditTask = ({ close, taskId }) => {
                 onChange={handleData}
                 className="text-black"
               >
-                <option value="doing">Doing</option>
-                <option value="done">Done</option>
+                {checkStt === "doing" ? (
+                  <>
+                    <option value="doing">doing</option>
+                    <option value="done">done</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="done">done</option>
+                    <option value="doing">doing</option>
+                  </>
+                )}
               </select>
               <textarea
-                className="h-[100px] text-black"
+                className="h-[100px] text-black resize"
                 type="text"
                 onChange={handleData}
                 value={data.note}

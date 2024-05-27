@@ -14,7 +14,7 @@ const CreateSubTask = () => {
     name: null,
     start_time: new Date(),
     end_time: null,
-    note: null,
+    note: "",
     task_id,
     status: "doing",
   };
@@ -29,7 +29,6 @@ const CreateSubTask = () => {
   const handleData = (e) => {
     const { value, name } = e.target;
     setData({ ...data, [name]: value });
-    console.log(data);
   };
 
   const handleClose = () => {
@@ -59,9 +58,9 @@ const CreateSubTask = () => {
 
   return (
     <>
-      <div className="fixed top-0 bottom-0 right-0 left-0 flex items-center justify-center bg-opacity-70 bg-[#162938] animate-[animation-zoom_ease-in_0.3s]">
+      <div className="fixed top-0 bottom-0 right-0 left-0 flex items-center justify-center bg-opacity-70 bg-[#162938] text-white animate-[animation-zoom_ease-in_0.3s]">
         <div className=" p-[20px] bg-[#162938] border-2 border-[#162938] rounded-xl">
-          <div className="mt-[8px] flex items-end gap-9 text-white relative">
+          <div className="mt-[8px] flex items-end gap-9  relative">
             <div>
               <p className="font-semibold ml-6 animation-noflicker">SubTask</p>
               <p className="font-semibold ml-6 animation-flicker">Notes</p>
@@ -100,7 +99,10 @@ const CreateSubTask = () => {
                 <DatePicker
                   selected={startDate}
                   onChange={(date) => {
-                    setData({ ...data, start_time: date });
+                    setData({
+                      ...data,
+                      start_time: moment(date).utcOffset(420).format(),
+                    });
                     setStartDate(date);
                   }}
                   timeInputLabel="Time:"
@@ -108,6 +110,7 @@ const CreateSubTask = () => {
                   showTimeInput
                   name="start_time"
                   className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -117,13 +120,17 @@ const CreateSubTask = () => {
                     className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
                     selected={endDate}
                     onChange={(date) => {
-                      setData({ ...data, end_time: date });
+                      setData({
+                        ...data,
+                        end_time: moment(date).utcOffset(420).format(),
+                      });
                       setEndDate(date);
                     }}
                     timeInputLabel="Time:"
                     dateFormat="dd/MM/YYYY h:mm aa"
                     showTimeInput
                     name="end_time"
+                    autoComplete="off"
                   />
                 </div>
                 {error.end_time ? (
@@ -137,11 +144,11 @@ const CreateSubTask = () => {
                 onChange={handleData}
                 className="text-black"
               >
-                <option value="doing">Doing</option>
-                <option value="done">Done</option>
+                <option value="doing">doing</option>
+                <option value="done">done</option>
               </select>
               <textarea
-                className="h-[100px] text-black"
+                className="h-[100px] text-black resize-none"
                 type="text"
                 onChange={handleData}
                 value={data.note}
@@ -151,7 +158,7 @@ const CreateSubTask = () => {
                 className=" p-2 bg-yellow-500 text-black active-default hover:bg-yellow-600 outline-none"
                 onClick={handleSubmit}
               >
-                Tạo mới
+                Create
               </button>
             </form>
           </div>

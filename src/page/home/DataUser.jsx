@@ -5,11 +5,11 @@ import { Outlet } from "react-router-dom";
 const DataUser = () => {
   return (
     <>
-      <div className="py-10 mx-3 text-white">
-        <div className="flex py-3 border-b">
+      <div className="text-[#162938] mr-5 bg-[#fbf8ff] p-8 h-full rounded-3xl">
+        <div className="flex px-4 pb-4 border-b border-[#162938]">
           <div className="w-[20%]">
             <div className="text-2xl font-light flex gap-[2%]">
-              <span className="pl-[10%]">Tác vụ của tôi</span>
+              <span className="pl-[10%]">My Task</span>
               <i className="fa-xs fa-regular fa-star"></i>
             </div>
           </div>

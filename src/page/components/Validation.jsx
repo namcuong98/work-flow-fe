@@ -3,7 +3,7 @@ import moment from "moment";
 export const ValidateLogin = (data) => {
   const error = {};
   const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const passwordPattern = /^.*[a-z]+.*$/;
+  const passwordPattern = /.+/;
 
   if (data.email === null) {
     error.email = "Bạn chưa nhập Email";
@@ -31,7 +31,7 @@ export const ValidateLogin = (data) => {
 
 export const ValidateCreateTasks = (data) => {
   const error = {};
-  const namePattern = /^.*[a-z]+.*$/;
+  const namePattern = /.+/;
   const compareDate =
     moment(data.start_time).valueOf() - moment(data.end_time).valueOf();
   if (data.name === null) {

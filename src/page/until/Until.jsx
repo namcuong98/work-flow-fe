@@ -2,7 +2,6 @@ import axios from "axios";
 import { createContext, useContext, useState } from "react";
 
 export const setLocalstorage = (token, id) => {
-  // console.log("id", id);
   localStorage.setItem("token", token);
   localStorage.setItem("id", id);
 };
@@ -28,6 +27,9 @@ export const StateProvider = ({ children }) => {
   const [actionLoading, setActionLoading] = useState();
   const [messageToast, setMessageToast] = useState("");
   const [activatedToastSubTask, setActivatedToastSubTask] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [notificationDeadline, setNotificationDeadline] = useState("");
+  const [notificationOverdue, setNotificationOverdue] = useState("");
 
   const updateState = (newValue) => {
     setActionLoading(newValue);
@@ -41,6 +43,18 @@ export const StateProvider = ({ children }) => {
     setActivatedToastSubTask(value);
   };
 
+  const updateLoggedIn = (value) => {
+    setLoggedIn(value);
+  };
+
+  const updateNotificationDeadline = (value) => {
+    setNotificationDeadline(value);
+  };
+
+  const updateNotificationOverdue = (value) => {
+    setNotificationOverdue(value);
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -50,6 +64,12 @@ export const StateProvider = ({ children }) => {
         updateMessageToast,
         activatedToastSubTask,
         updateToastCreateSubTask,
+        loggedIn,
+        updateLoggedIn,
+        notificationDeadline,
+        updateNotificationDeadline,
+        notificationOverdue,
+        updateNotificationOverdue,
       }}
     >
       {children}

@@ -41,7 +41,6 @@ const Login = () => {
         .then((res) => {
           if (res.data.access_token) {
             setLocalstorage(res.data.access_token, res.data.id);
-            alert("Đăng nhập thành công");
             navigate("/home/listwork");
           } else {
             alert("Đăng nhập không thành công");

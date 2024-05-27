@@ -1,13 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { setLocalstorage } from "../until/Until";
 
 export const Header = () => {
   // const [auth, setAuth] = useState(false)
-  const navigate = useNavigate();
   const [name, setName] = useState("Đăng nhập");
-  const [message, setMessage] = useState("");
   const [clock, setClock] = useState(new Date());
 
   const fomatNumber = (number) => {
@@ -27,30 +23,25 @@ export const Header = () => {
         const userName = res.data.email.replace("@gmail.com", "");
         setName(userName);
       } else {
-        setMessage(res.data.message);
-        console.log("message");
+        console.log("err");
       }
     });
   }, []);
 
   return (
     <>
-      <header className="my-5 ml-[2%] flex gap-[50px] h-[40px] items-center text-white bg-black">
-        <span className="text-2xl">Welcome ComeBack, {name}</span>
-
-        <div className="w-[46%] relative h-full">
-          <input
-            type="text"
-            placeholder="Tìm kiếm tài liệu, nội dung khác..."
-            className="py-1 px-5 w-full h-full rounded-full opacity-70 outline-none text-black"
-          />
-          <i class="fa-solid fa-magnifying-glass absolute right-[5%] top-[34%]"></i>
-        </div>
-        {/* hover:border hover:rounded-md hover:bg-slate-200 hover:bg-opacity-55 */}
-        <div className="text-4xl pr-14 cursor-pointer">
-          <span>{fomatNumber(clock.getHours())}:</span>
-          <span>{fomatNumber(clock.getMinutes())}:</span>
-          <span>{fomatNumber(clock.getSeconds())}</span>
+      <header className="p-[40px]  flex gap-[50px] h-[40px] items-center justify-between text-white">
+        <span className="text-2xl font-medium">
+          Welcome ComeBack, {name.charAt(0).toUpperCase() + name.slice(1)}
+        </span>
+        <div className="text-4xl mr-[16%] pr-14 cursor-pointer flex gap-1">
+          <span className="min-w-[46px]">{fomatNumber(clock.getHours())}:</span>
+          <span className="min-w-[46px]">
+            {fomatNumber(clock.getMinutes())}:
+          </span>
+          <span className="min-w-[46px]">
+            {fomatNumber(clock.getSeconds())}
+          </span>
         </div>
       </header>
     </>

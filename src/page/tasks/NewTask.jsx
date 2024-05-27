@@ -11,7 +11,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
     name: null,
     start_time: new Date(),
     end_time: null,
-    note: null,
+    note: "",
     status: "doing",
   };
   const { actionLoading, updateState, updateMessageToast } = useStateContext();
@@ -19,8 +19,6 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
   const [endDate, setEndDate] = useState();
   const [error, setError] = useState(info);
   const [data, setData] = useState(info);
-  // const [flag, setFlag] = useState(false);
-  // const taskNotesRef = useRef();
 
   const handleData = (e) => {
     const { value, name } = e.target;
@@ -31,28 +29,6 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
     e.preventDefault();
     setError(ValidateCreateTasks(data));
   };
-
-  // const handleCreateTask = (e) => {
-  //   if (flag) {
-  //     // const parent = taskNotesRef.current;
-  //     // const target = e.target;
-  //     if (
-  //       // target === parent ||
-  //       // parent.contains(target) ||
-  //       // (target.offsetParent === parent && target !== document.body)
-  //       taskNotesRef.current && !taskNotesRef.current.contains(e.target)
-  //     ) {
-  //       setFlag(false);
-  //       closeNewTasks();
-  //     }
-  //   } else {
-  //     setFlag(true);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("click", handleCreateTask);
-  // }, [flag]);
 
   useEffect(() => {
     if (error.name === "" && error.end_time === "") {
@@ -120,7 +96,10 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                 <DatePicker
                   selected={startDate}
                   onChange={(date) => {
-                    setData({ ...data, start_time: date });
+                    setData({
+                      ...data,
+                      start_time: moment(date).utcOffset(420).format(),
+                    });
                     setStartDate(date);
                   }}
                   timeInputLabel="Time:"
@@ -128,6 +107,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                   showTimeInput
                   name="start_time"
                   className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -137,13 +117,17 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                     className="min-w-[300px] outline-none border-b border-b-gray-600 bg-transparent"
                     selected={endDate}
                     onChange={(date) => {
-                      setData({ ...data, end_time: date });
+                      setData({
+                        ...data,
+                        end_time: moment(date).utcOffset(420).format(),
+                      });
                       setEndDate(date);
                     }}
                     timeInputLabel="Time:"
                     dateFormat="dd/MM/YYYY h:mm aa"
                     showTimeInput
                     name="end_time"
+                    autoComplete="off"
                   />
                 </div>
                 {error.end_time ? (
@@ -157,11 +141,11 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                 onChange={handleData}
                 className="text-black"
               >
-                <option value="doing">Doing</option>
-                <option value="done">Done</option>
+                <option value="doing">doing</option>
+                <option value="done">done</option>
               </select>
               <textarea
-                className="h-[100px] text-black"
+                className="h-[100px] text-black resize-none"
                 type="text"
                 onChange={handleData}
                 value={data.note}
@@ -171,7 +155,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                 className=" p-2 bg-yellow-500 text-black active-default hover:bg-yellow-600 outline-none"
                 onClick={handleSubmit}
               >
-                Tạo mới
+                Create
               </button>
             </form>
           </div>
