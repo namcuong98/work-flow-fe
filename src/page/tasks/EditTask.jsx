@@ -35,10 +35,7 @@ const EditTask = ({ close, taskId }) => {
   useEffect(() => {
     if (error.name === "" && error.end_time === "") {
       axios
-        .put(
-          `https://work-flow-be-1.onrender.com:8081/task-update?id=${taskId}`,
-          data
-        )
+        .put(`http://localhost:8081/task-update?id=${taskId}`, data)
         .then((res) => {
           close(false);
         })

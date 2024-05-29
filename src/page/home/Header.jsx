@@ -18,7 +18,7 @@ export const Header = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("https://work-flow-be-1.onrender.com:8081/home").then((res) => {
+    axios.get("http://localhost:8081/home").then((res) => {
       if (res.data.access_token) {
         const userName = res.data.email.replace("@gmail.com", "");
         setName(userName);
