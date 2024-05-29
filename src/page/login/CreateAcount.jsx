@@ -46,7 +46,7 @@ const CreateAcount = () => {
       errors.repeatPassword === ""
     ) {
       axios
-        .post("http://localhost:8081/signup", data)
+        .post("https://work-flow-be-1.onrender.comsignup", data)
         .then((res) => {
           alert("Tạo tài khoản thành công");
           navigate("/login");
