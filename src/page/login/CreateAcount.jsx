@@ -46,15 +46,14 @@ const CreateAcount = () => {
       errors.repeatPassword === ""
     ) {
       axios
-        .post("http://localhost:8081/signup", data)
+        .post("https://work-flow-be-1.onrender.com:8081/signup", data)
         .then((res) => {
           alert("Tạo tài khoản thành công");
-          navigate("/home");
-          console.log(res);
+          navigate("/login");
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [errors]);
 
   return (
     <div className="overflow-hidden m-auto bg-transparent px-[40px] py-10 w-[26%] backdrop-blur-[14px] border-2 border-opacity-50 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] relative animation-default">
