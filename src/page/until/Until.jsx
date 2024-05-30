@@ -14,7 +14,7 @@ export const getTokenLocalstorage = () => {
 axios.defaults.withCredentials = true;
 
 export const loggedInInstance = axios.create({
-  baseURL: "http://work-flow-be-1.onrender.com",
+  baseURL: "https://work-flow-be-1.onrender.com",
   headers: {
     Authorization: `Bearer ${getTokenLocalstorage()}`,
   },
