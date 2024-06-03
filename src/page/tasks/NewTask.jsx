@@ -33,7 +33,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
   useEffect(() => {
     if (error.name === "" && error.end_time === "") {
       axios
-        .post("http://localhost:8081/task-create", data)
+        .post("https://work-flow-be.onrender.com/task-create", data)
         .then((res) => {
           openToast(true);
           setData(info);

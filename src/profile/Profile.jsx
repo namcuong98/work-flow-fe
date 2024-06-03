@@ -25,7 +25,7 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8081/send-mail", sendMail)
+      .post("https://work-flow-be.onrender.com/send-mail", sendMail)
       .then((res) => {
         setIsToast(true);
         setSendMail(defaultData);
