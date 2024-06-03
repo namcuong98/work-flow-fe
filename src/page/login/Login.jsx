@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../style/style.css";
-import { setLocalstorage } from "../until/Until";
+import { loggedInInstance, setLocalstorage } from "../until/Until";
 import { ValidateLogin } from "../components/Validation";
 
 const Login = () => {
@@ -36,8 +36,11 @@ const Login = () => {
 
   useEffect(() => {
     if (errors.email === "" && errors.password === "") {
-      axios
-        .post("https://work-flow-be.onrender.com/login", data)
+      loggedInInstance({
+        url: "login",
+        method: "POST",
+        data: data,
+      })
         .then((res) => {
           if (res.data.access_token) {
             setLocalstorage(res.data.access_token, res.data.id);

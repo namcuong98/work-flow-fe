@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../style/style.css";
 import { ValidateLogin } from "../components/Validation";
+import { loggedInInstance } from "../until/Until";
 
 const CreateAcount = () => {
   const navigate = useNavigate();
@@ -45,8 +46,11 @@ const CreateAcount = () => {
       errors.password === "" &&
       errors.repeatPassword === ""
     ) {
-      axios
-        .post("https://work-flow-be.onrender.com/signup", data)
+      loggedInInstance({
+        url: "signup",
+        method: "POST",
+        data: data,
+      })
         .then((res) => {
           alert("Tạo tài khoản thành công");
           navigate("/login");

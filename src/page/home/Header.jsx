@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { loggedInInstance } from "../until/Until";
 
 export const Header = () => {
   // const [auth, setAuth] = useState(false)
@@ -18,7 +19,9 @@ export const Header = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("https://work-flow-be.onrender.com/home").then((res) => {
+    loggedInInstance({
+      url: "home",
+    }).then((res) => {
       if (res.data.access_token) {
         const userName = res.data.email.replace("@gmail.com", "");
         setName(userName);

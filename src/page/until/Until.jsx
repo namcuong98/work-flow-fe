@@ -12,9 +12,9 @@ export const getTokenLocalstorage = () => {
 
 // New - send cookie to all req from backend
 axios.defaults.withCredentials = true;
-
+console.log(process.env.REACT_APP_BASE_URL);
 export const loggedInInstance = axios.create({
-  baseURL: "https://work-flow-be.onrender.com/",
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     Authorization: `Bearer ${getTokenLocalstorage()}`,
   },

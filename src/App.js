@@ -16,6 +16,7 @@ import Profile from "./profile/Profile";
 // import { store } from "./store/store";
 
 function App() {
+  console.log(process.env.REACT_APP_BASE_URL);
   return (
     // <Provider store={store}>
     <StateProvider>

@@ -229,11 +229,11 @@ input:valid~ .labelLogin {
 }
 
 .animation-topIn{
-  animation: slideinleft ease 1s, fadeOut linear 1s 2s forwards;
+  animation: slideintop ease 1s, fadeOut linear 1s 2s forwards;
 }
 
 
-@keyframes slideinleft {
+@keyframes slideintop {
   from {
       opacity: 0;
       transform: translateY(-100%);

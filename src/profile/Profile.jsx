@@ -4,6 +4,7 @@ import { beSkillsData, dbSkillsData, feSkillsData } from "./Data";
 import Action from "../style/Action";
 import axios from "axios";
 import ToastProfile from "./ToastProfile";
+import { loggedInInstance } from "../page/until/Until";
 
 const Profile = () => {
   const defaultData = {
@@ -24,8 +25,11 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("https://work-flow-be.onrender.com/send-mail", sendMail)
+    loggedInInstance({
+      url: "send-mail",
+      method: "POST",
+      data: sendMail,
+    })
       .then((res) => {
         setIsToast(true);
         setSendMail(defaultData);
