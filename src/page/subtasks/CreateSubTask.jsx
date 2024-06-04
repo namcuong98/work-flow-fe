@@ -104,7 +104,7 @@ const CreateSubTask = () => {
                   onChange={(date) => {
                     setData({
                       ...data,
-                      start_time: moment(date).utcOffset(420).format(),
+                      start_time: moment(date).utc().format(),
                     });
                     setStartDate(date);
                   }}
@@ -125,7 +125,7 @@ const CreateSubTask = () => {
                     onChange={(date) => {
                       setData({
                         ...data,
-                        end_time: moment(date).utcOffset(420).format(),
+                        end_time: moment(date).utc().format(),
                       });
                       setEndDate(date);
                     }}

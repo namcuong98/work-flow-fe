@@ -19,7 +19,8 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
   const [endDate, setEndDate] = useState();
   const [error, setError] = useState(info);
   const [data, setData] = useState(info);
-
+  console.log(startDate);
+  console.log(data);
   const handleData = (e) => {
     const { value, name } = e.target;
     setData({ ...data, [name]: value });
@@ -101,7 +102,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                   onChange={(date) => {
                     setData({
                       ...data,
-                      start_time: moment(date).format(),
+                      start_time: moment(date).utc().format(),
                     });
                     setStartDate(date);
                   }}
@@ -122,7 +123,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                     onChange={(date) => {
                       setData({
                         ...data,
-                        end_time: moment(date).format(),
+                        end_time: moment(date).utc().format(),
                       });
                       setEndDate(date);
                     }}
