@@ -1,9 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { loggedInInstance } from "../until/Until";
 
 export const Header = () => {
-  // const [auth, setAuth] = useState(false)
   const [name, setName] = useState("Đăng nhập");
   const [clock, setClock] = useState(new Date());
 

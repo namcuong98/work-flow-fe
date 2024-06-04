@@ -101,7 +101,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                   onChange={(date) => {
                     setData({
                       ...data,
-                      start_time: moment(date).utcOffset(420).format(),
+                      start_time: moment(date).format(),
                     });
                     setStartDate(date);
                   }}
@@ -122,7 +122,7 @@ const NewTask = ({ collapsed, closeNewTasks, openToast }) => {
                     onChange={(date) => {
                       setData({
                         ...data,
-                        end_time: moment(date).utcOffset(420).format(),
+                        end_time: moment(date).format(),
                       });
                       setEndDate(date);
                     }}
