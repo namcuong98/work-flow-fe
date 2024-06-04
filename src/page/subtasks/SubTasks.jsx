@@ -40,7 +40,7 @@ const SubTasks = ({
                 <Link to={`/home/deadline/subtask-create/:${taskId}`}>
                   <button className="btndefault text-[#162938] bg-[#f3ebff] hover:bg-[#8e6363] hover:text-white p-1 mt-1 rounded-[6px] active-default">
                     <i className="fa-solid fa-plus mr-1"></i>
-                    <span className="bg-red-500">ADD</span>
+                    <span>ADD</span>
                   </button>
                 </Link>
               ) : null}
