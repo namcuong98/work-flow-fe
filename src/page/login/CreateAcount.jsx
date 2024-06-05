@@ -17,6 +17,7 @@ const CreateAcount = () => {
   const [errors, setErrors] = useState(info);
   const [lockOpen, setLockOpen] = useState(false);
   const [lockRepeatOpen, setLockRepeatOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLockOpen = () => {
     setLockOpen(!lockOpen);
@@ -46,12 +47,14 @@ const CreateAcount = () => {
       errors.password === "" &&
       errors.repeatPassword === ""
     ) {
+      setLoading(true);
       loggedInInstance({
         url: "signup",
         method: "POST",
         data: data,
       })
         .then((res) => {
+          setLoading(false);
           alert("Tạo tài khoản thành công");
           navigate("/login");
         })
@@ -123,9 +126,16 @@ const CreateAcount = () => {
       </form>
       <button
         onClick={handleSubmit}
-        className="w-full text-center font-semibold py-3 mt-9 text-white rounded-lg bg-[#162938]"
+        className="w-full text-center font-semibold py-3 mt-9 text-white rounded-lg bg-[#162938] flex justify-center items-center"
       >
-        Register
+        {loading ? (
+          <svg
+            className="animate-spin h-5 w-5 border-2 border-r-slate-300 ..."
+            viewBox="0 0 24 24"
+          ></svg>
+        ) : (
+          "Register"
+        )}
       </button>
       <div className="flex justify-center mt-6">
         <span className="mr-1">Already have an account?</span>
