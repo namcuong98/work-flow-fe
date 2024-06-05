@@ -24,6 +24,7 @@ const Listwork = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState([]);
   const [word, setWord] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState("");
 
   useEffect(() => {
     setLoadingData(!loadingData);
@@ -31,12 +32,14 @@ const Listwork = () => {
 
   const handleFindData = (e) => {
     setWord(e.target.value);
+    let timeOut = null;
+    clearTimeout(timeOut);
+    timeOut = setTimeout(() => {
+      setDebouncedValue(e.target.value);
+    }, 1500);
   };
 
-  useEffect(() => {
-    if (!getTokenLocalstorage()) {
-      navigate("/login");
-    }
+  const callAPI = () => {
     loggedInInstance({
       url: "/task-find",
       method: "POST",
@@ -50,7 +53,31 @@ const Listwork = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [word, currentPage, modal, openSubTasks, loadingData]);
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    loggedInInstance({
+      url: "/task-find",
+      method: "POST",
+      data: { word: debouncedValue, currentPage },
+    })
+      .then((res) => {
+        const lengthData = Math.ceil(res.data.paginateFind / pageSize);
+        setTotalPage(lengthData);
+        setPaginatedData(res.data.tasksFind);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    if (!getTokenLocalstorage()) {
+      navigate("/login");
+    }
+    callAPI();
+  }, [currentPage, modal, openSubTasks, loadingData]);
 
   return (
     <>
