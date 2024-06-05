@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../style/style.css";
 import { loggedInInstance, setLocalstorage } from "../until/Until";
@@ -14,14 +14,10 @@ const Login = () => {
   const [data, setData] = useState(info);
   const [errors, setErrors] = useState(info);
   const [lockOpen, setLockOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLockOpen = () => {
     setLockOpen(!lockOpen);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrors(ValidateLogin(data));
   };
 
   const handlechange = (e) => {
@@ -33,14 +29,21 @@ const Login = () => {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors(ValidateLogin(data));
+  };
+
   useEffect(() => {
     if (errors.email === "" && errors.password === "") {
+      setLoading(true);
       loggedInInstance({
         url: "login",
         method: "POST",
         data: data,
       })
         .then((res) => {
+          setLoading(false);
           if (res.data.access_token) {
             setLocalstorage(res.data.access_token, res.data.id);
             navigate("/home/listwork");
@@ -111,9 +114,16 @@ const Login = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="w-full text-center font-semibold py-3 text-white rounded-lg bg-[#162938]"
+          className="w-full text-center font-semibold py-3 text-white rounded-lg bg-[#162938] flex justify-center items-center"
         >
-          Login
+          {loading ? (
+            <svg
+              className="animate-spin h-5 w-5 border-2 border-r-slate-300 ..."
+              viewBox="0 0 24 24"
+            ></svg>
+          ) : (
+            "Login"
+          )}
         </button>
         <div className="flex justify-center mt-6">
           <span className="mr-1">Don't have an account?</span>

@@ -25,6 +25,7 @@ const Listwork = () => {
   const [paginatedData, setPaginatedData] = useState([]);
   const [word, setWord] = useState("");
   const [debouncedValue, setDebouncedValue] = useState("");
+  let timeOut = null;
 
   useEffect(() => {
     setLoadingData(!loadingData);
@@ -32,7 +33,6 @@ const Listwork = () => {
 
   const handleFindData = (e) => {
     setWord(e.target.value);
-    let timeOut = null;
     clearTimeout(timeOut);
     timeOut = setTimeout(() => {
       setDebouncedValue(e.target.value);
